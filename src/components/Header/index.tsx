@@ -8,10 +8,12 @@ type Props = {
     onRestart: () => void;
 };
 
+console.log(styles);
+
 export function Header({ current, max, onRestart }: Props) {
     return (
         <div className={styles.container}>
-            <img src={logo} alt="Logo da words" />
+            <img src={logo} alt="Logo" />
 
             <header>
                 <span>
