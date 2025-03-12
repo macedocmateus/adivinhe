@@ -3,6 +3,7 @@ import { Header } from "./components/Header";
 import { Tip } from "./components/Tip";
 import { Letter } from "./components/Letter";
 import { Input } from "./components/Input";
+import { Button } from "./components/Button";
 
 function App() {
     function handleRestartGame() {
@@ -30,8 +31,9 @@ function App() {
 
                 <h4>Palpite</h4>
 
-                <div>
+                <div className={styles.guess}>
                     <Input autoFocus maxLength={1} placeholder="?"></Input>
+                    <Button title="Confirmar"></Button>
                 </div>
             </main>
         </div>
