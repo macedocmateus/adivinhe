@@ -11,6 +11,8 @@ import { WORDS, Challenge } from "./utils/words";
 import { useEffect } from "react";
 import { useState } from "react";
 
+const ATTEMPTS_MARGIN = 5;
+
 function App() {
     const [score, setScore] = useState(0);
     const [letter, setLetter] = useState("");
@@ -76,8 +78,8 @@ function App() {
         <div className={styles.container}>
             <main>
                 <Header
-                    current={score}
-                    max={10}
+                    current={lettersUsed.length}
+                    max={challenge.word.length + ATTEMPTS_MARGIN}
                     onRestart={handleRestartGame}
                 ></Header>
 
