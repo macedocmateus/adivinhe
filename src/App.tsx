@@ -13,9 +13,8 @@ import { useState } from "react";
 
 function App() {
     const [score, setScore] = useState(0);
-    const [attempts, setAttempts] = useState(0);
     const [letter, setLetter] = useState("");
-    const [letterUsed, setLetterUsed] = useState<LettersUsedProps[]>([]);
+    const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
     const [challenge, setChallenge] = useState<Challenge | null>(null);
 
     function handleRestartGame() {
@@ -28,8 +27,9 @@ function App() {
         const randomWord = WORDS[index];
         setChallenge(randomWord);
 
-        setAttempts(0);
+        setScore(0);
         setLetter("");
+        setLettersUsed([]);
     }
 
     function handleConfirm() {
@@ -42,7 +42,7 @@ function App() {
         }
 
         const value = letter.toUpperCase();
-        const exists = letterUsed.find(
+        const exists = lettersUsed.find(
             (used) => used.value.toLocaleUpperCase() === value,
         );
 
@@ -58,7 +58,7 @@ function App() {
         const correct = hits > 0;
         const currentScore = score + hits;
 
-        setLetterUsed((prevState) => [...prevState, { value, correct }]);
+        setLettersUsed((prevState) => [...prevState, { value, correct }]);
         setScore(currentScore);
 
         setLetter("");
@@ -76,7 +76,7 @@ function App() {
         <div className={styles.container}>
             <main>
                 <Header
-                    current={attempts}
+                    current={score}
                     max={10}
                     onRestart={handleRestartGame}
                 ></Header>
@@ -84,9 +84,23 @@ function App() {
                 <Tip tip={challenge.tip}></Tip>
 
                 <div className={styles.word}>
-                    {challenge.word.split("").map(() => (
-                        <Letter value=""></Letter>
-                    ))}
+                    {challenge.word.split("").map((letter, index) => {
+                        const letterUsed = lettersUsed.find(
+                            (used) =>
+                                used.value.toUpperCase() ===
+                                letter.toUpperCase(),
+                        );
+
+                        return (
+                            <Letter
+                                key={index}
+                                value={letterUsed?.value}
+                                color={
+                                    letterUsed?.correct ? "correct" : "default"
+                                }
+                            ></Letter>
+                        );
+                    })}
                 </div>
 
                 <h4>Palpite</h4>
@@ -102,7 +116,7 @@ function App() {
                     <Button title="Confirmar" onClick={handleConfirm}></Button>
                 </div>
 
-                <LettersUsed data={letterUsed}></LettersUsed>
+                <LettersUsed data={lettersUsed}></LettersUsed>
             </main>
         </div>
     );
