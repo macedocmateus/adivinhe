@@ -18,10 +18,11 @@ function App() {
     const [letter, setLetter] = useState("");
     const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
     const [challenge, setChallenge] = useState<Challenge | null>(null);
+    const [shake, setShake] = useState(false);
 
     function handleRestartGame() {
         const isConfirmed = window.confirm(
-            "Você tem certeza que deseja reiniciar?",
+            "Você tem certeza que deseja reiniciar?"
         );
 
         if (isConfirmed) {
@@ -51,7 +52,7 @@ function App() {
 
         const value = letter.toUpperCase();
         const exists = lettersUsed.find(
-            (used) => used.value.toLocaleUpperCase() === value,
+            (used) => used.value.toLocaleUpperCase() === value
         );
 
         if (exists) {
@@ -71,6 +72,13 @@ function App() {
         setScore(currentScore);
 
         setLetter("");
+
+        if (!correct) {
+            setShake(true);
+            setTimeout(() => {
+                setShake(false);
+            }, 300);
+        }
     }
 
     function endGame(message: string) {
@@ -114,12 +122,12 @@ function App() {
 
                 <Tip tip={challenge.tip}></Tip>
 
-                <div className={styles.word}>
+                <div className={`${styles.word} ${shake && styles.shake}`}>
                     {challenge.word.split("").map((letter, index) => {
                         const letterUsed = lettersUsed.find(
                             (used) =>
                                 used.value.toUpperCase() ===
-                                letter.toUpperCase(),
+                                letter.toUpperCase()
                         );
 
                         return (
